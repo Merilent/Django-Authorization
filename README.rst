@@ -1,4 +1,3 @@
-# Django-Authorization
 Django Custom Authorization 
 
 Django custom Authorization base on django groups. This authorization applied to API controller.
