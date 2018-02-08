@@ -20,12 +20,14 @@ class GroupPermissions(admin.StackedInline):
 
 
 # Define a new User admin
+# here user inherit superuser class
 class UserAdmin(BaseUserAdmin):
     inlines = [SuperUser]
 # Re-register UserAdmin
 
 
 # Define a new Group admin
+# here group inherit group permission class
 class GroupAdmin(BaseGroupAdmin):
     inlines = [GroupPermissions]
 # Re-register GroupAdmin

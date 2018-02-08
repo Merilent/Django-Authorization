@@ -5,6 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 # Generic method to check user has assign any manager(super users)
+# This method for manager can see under user records i.e access records
 def user_manger_recurse(user_list=[]):
     logger.info('user_manger_recurse start')
     user_manager_list=[]
