@@ -69,7 +69,7 @@ class Authorize(object):
                         user_group_name = [x.name for x in Group.objects.filter(id__in=user_group_ids)]
                         # User and group list store in memory cache for 300000 second timeperiod after the cache is clear
                         response = mc.set(str(user), str(user_group_name), 300000)
-                        logger.info('>>>>>>user group store in cache>>>>>>')
+                        logger.info('User group data store in cache')
                         return fn(request)
                     else:
                         raise PermissionDenied
@@ -77,3 +77,25 @@ class Authorize(object):
                 return fn(request)
         return check_permission
 
+# class ISCheckPermission(permissions.BasePermission):
+#     ''' Inherites default Authorization permission class in that we have check user has assign manager
+#         then manager should be access child records'''
+#     def has_permission(self, request, view, *args,**kwargs):
+#         logger.info('ISCheckPermission Started.')
+#         if str(request.user) == 'AnonymousUser':
+#             request._cached_user = get_user(request)
+#             user_name = request._cached_user
+#         else:
+#             user_name = request.user
+#         user_list = []
+#         user = User.objects.get(username=user_name).id or []
+#         superuser_list = SuperUser.objects.filter(super_user_id=user).values('user_id') or []
+#         if superuser_list:
+#             new_list = list(map(lambda x: x['user_id'], superuser_list))
+#             user_list = list(set(new_list))
+#
+#         logger.info('ISCheckPermission Ended.')
+#         if user_list:
+#             return True
+#         else:
+#             return False
