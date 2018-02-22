@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User,Group
 from django.db.models.signals import post_save
 import memcache
-from cxp.settings import CACHES
+from django.conf import settings
 # Create your models here.
 
 
@@ -21,7 +21,7 @@ from cxp.settings import CACHES
 #
 # # here when user has assign or remove group then user cache will updated
 # def set_user_cache(sender, instance, created,*args, **kwargs):
-#     cache_location = CACHES['default']['LOCATION']
+#     cache_location = settings.CACHES['default']['LOCATION']
 #     mc = memcache.Client([str(cache_location)])
 #     user = instance.id
 #     # To calculate current user group list
@@ -55,11 +55,11 @@ class GroupPermissions(models.Model):
 
 # here when group has assign and remove super group then all memory cache will delete.
 def set_group_cache(sender, instance, created,*args, **kwargs):
-    cache_location = CACHES['default']['LOCATION']
+    cache_location = settings.CACHES['default']['LOCATION']
     mc = memcache.Client([str(cache_location)])
     group_ids = instance.id
     # To check group has assign to super group then delete to all memory cache
-    super_group_ids = [x.super_group_id for x in GroupPermissions.objects.filter(group=group_ids)][0]
+    super_group_ids = [x.super_group_id for x in GroupPermissions.objects.filter(group=group_ids)]
     response = True
     if super_group_ids:
         response = mc.flush_all()

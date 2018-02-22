@@ -12,7 +12,7 @@ _user = local()
 import logging
 logger = logging.getLogger(__name__)
 import memcache
-from cxp.settings import CACHES
+from django.conf import settings
 
 
 class Authorize(object):
@@ -29,7 +29,7 @@ class Authorize(object):
         def check_permission(request):
             group_name = self.group_name
             # here cache connections
-            cache_location = CACHES['default']['LOCATION']
+            cache_location = settings.CACHES['default']['LOCATION']
             mc = memcache.Client([str(cache_location)])
             logger.info('Authorize Started.')
             if str(request.user) == 'AnonymousUser':
